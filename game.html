@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jeu de Lexique – Animaux & Nature | 法汉配对（修正版+发音按钮）</title>
+<style>
+  :root{--bg:#f7fafc;--card:#ffffff;--ink:#0f172a;--muted:#64748b;--ok:#10b981;--bad:#ef4444;--brand:#2563eb;--radius:16px;--shadow:0 14px 38px rgba(15, 23, 42, .08)}
+  body{margin:0;background:linear-gradient(180deg,#f8fafc,#eef2f7 60%,#e8eef7);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:var(--ink)}
+  .wrap{max-width:1100px;margin:24px auto 64px;padding:0 18px}
+  header{display:flex;flex-direction:column;gap:10px;margin:10px 0 16px}
+  .logo{width:36px;height:36px;border-radius:10px;background:#e0f2fe;display:grid;place-items:center;font-size:20px}
+  h1{margin:0;font-size:24px}
+  .sub{color:var(--muted);font-size:13px}
+  nav{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px}
+  nav a{padding:6px 12px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;background:#2563eb;color:#fff}
+  nav a:hover{background:#1e40af}
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .col{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);border:1px solid #e6ebf2;min-height:360px}
+  .col h2{margin:0 0 10px;font-size:16px;color:#1e293b}
+  .pool,.targets{display:grid;grid-template-columns:repeat(auto-fill, minmax(150px,1fr));gap:10px}
+  .chip{user-select:none;background:#fff;border:1px solid #e6ebf2;border-radius:12px;padding:10px;box-shadow:0 6px 14px rgba(2,6,23,.06);cursor:grab;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .chip button{margin-top:4px;font-size:12px;padding:2px 6px;border-radius:6px;border:1px solid #cbd5e1;background:#f1f5f9;cursor:pointer}
+  .chip:active{cursor:grabbing;transform:scale(.98)}
+  .chip.locked{cursor:default;opacity:.8}
+  .target{background:#fbfdff;border:2px dashed #d7deea;border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90px;transition:border-color .12s ease, background .12s ease}
+  .target[data-state="hover"]{border-color:var(--brand);background:#f0f7ff}
+  .target.filled{border-style:solid}
+  .tag{font-weight:700;margin-top:4px}
+  .emoji{font-size:24px}
+  .ok{background:#ecfdf5;border-color:#a7f3d0}
+  .bad{background:#fef2f2;border-color:#fecaca}
+  .hud{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:12px 0}
+  .btn{appearance:none;border:0;background:var(--brand);color:#fff;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+  .btn.ghost{background:#eef2ff;color:#1e40af}
+  footer{margin-top:16px;color:var(--muted);font-size:12px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 14px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .25s ease}
+  .toast.show{opacity:1}
+  .speak{margin-left:6px;font-size:12px;padding:2px 6px;border-radius:8px;border:1px solid #cbd5e1;background:#eef2ff;color:#1e40af;cursor:pointer}
+  .speak:hover{background:#e0e7ff}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">🧩</div>
+      <div>
+        <h1>Jeu de Lexique – Animaux & Nature（修正版+发音按钮）</h1>
+        <div class="sub">修正了“écosystème / biodiversité”对应关系。拖拽匹配：正确则嵌入，错误则提示。</div>
+      </div>
+      <nav>
+        <a href="index.html">🏠 返回展示板主页</a>
+      </nav>
+    </header>
+
+    <div class="hud">
+      <button class="btn" id="startBtn">开始新一轮</button>
+      <button class="btn ghost" id="revealBtn">显示答案</button>
+      <label><input type="checkbox" id="reverseMode"/> 反向模式 (中→法)</label>
+    </div>
+
+    <div class="board">
+      <section class="col">
+        <h2 id="colLeftTitle">① 法语词</h2>
+        <div class="pool" id="pool"></div>
+      </section>
+      <section class="col">
+        <h2 id="colRightTitle">② 中文释义 + 图标</h2>
+        <div class="targets" id="targets"></div>
+      </section>
+    </div>
+
+    <footer>保存为 <code>.html</code>，在PPT中插入链接即可运行。</footer>
+  </div>
+
+  <div class="toast" id="toast">Très bien！已全部匹配 ✅</div>
+
+<script>
+const BANK = [
+  {fr:"le loup", zh:"狼", emoji:"🐺"},
+  {fr:"l’ours", zh:"熊", emoji:"🐻"},
+  {fr:"le chamois", zh:"岩羚羊", emoji:"🦌"},
+  {fr:"le bouquetin", zh:"野生山羊", emoji:"🐐"},
+  {fr:"le cerf", zh:"鹿", emoji:"🫎"},
+  {fr:"la marmotte", zh:"旱獭", emoji:"🐿️"},
+  {fr:"le mouton", zh:"绵羊", emoji:"🐑"},
+  {fr:"la brebis", zh:"母羊", emoji:"🐏"},
+  {fr:"la vache", zh:"母牛", emoji:"🐄"},
+  {fr:"le chien", zh:"狗", emoji:"🐕"},
+  {fr:"le chat", zh:"猫", emoji:"🐈"},
+  {fr:"la faune", zh:"动物区系", emoji:"🐾"},
+  {fr:"les mammifères", zh:"哺乳动物", emoji:"🍼"},
+  {fr:"les oiseaux", zh:"鸟类", emoji:"🐦"},
+  {fr:"les poissons", zh:"鱼类", emoji:"🐟"},
+  {fr:"les insectes", zh:"昆虫", emoji:"🐞"},
+  {fr:"la flore", zh:"植物区系", emoji:"🌿"},
+  {fr:"une plante", zh:"植物", emoji:"🪴"},
+  {fr:"une fleur", zh:"花", emoji:"🌸"},
+  {fr:"un arbre", zh:"树", emoji:"🌳"},
+  {fr:"la biodiversité", zh:"生物多样性", emoji:"🧬"},
+  {fr:"un écosystème", zh:"生态系统", emoji:"🌍"},
+];
+
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+const shuffle=arr=>arr.sort(()=>Math.random()-0.5);
+let current=[];let score=0;let reverse=false;
+
+function speak(text,lang='fr-FR'){
+  try{ const u=new SpeechSynthesisUtterance(text); u.lang=lang; speechSynthesis.speak(u);}catch(e){}
+}
+
+function buildChips(){
+  $('#pool').innerHTML='';
+  current.forEach((item,i)=>{
+    const chip=document.createElement('div');
+    chip.className='chip'; chip.draggable=true; chip.dataset.key=i;
+    if(!reverse){
+      chip.innerHTML = `<div>${item.fr} <button type="button" class="speak">🔊</button></div>`;
+      chip.querySelector('.speak').addEventListener('click',()=>speak(item.fr));
+    } else {
+      chip.innerHTML = `<div class="emoji">${item.emoji}</div><div class="tag">${item.zh}</div>`;
+    }
+    chip.addEventListener('dragstart',ev=>{
+      ev.dataTransfer.setData('text/plain', i);
+      ev.dataTransfer.effectAllowed='move';
+    });
+    $('#pool').appendChild(chip);
+  });
+}
+
+function buildTargets(){
+  $('#targets').innerHTML='';
+  const shuffled = shuffle(current.slice());
+  shuffled.forEach(item=>{
+    const idx = current.indexOf(item);
+    const t=document.createElement('div'); t.className='target'; t.dataset.key=idx;
+    if(!reverse){
+      t.innerHTML = `<div class="emoji">${item.emoji}</div><div class="tag">${item.zh}</div><div class="placeholder">拖拽法语到这里</div>`;
+    } else {
+      t.innerHTML = `<div class="tag">${item.fr} <button type=\"button\" class=\"speak\">🔊</button></div><div class="placeholder">拖拽中文到这里</div>`;
+      t.querySelector('.speak').addEventListener('click',()=>speak(item.fr));
+    }
+    bindTarget(t, idx);
+    $('#targets').appendChild(t);
+  });
+}
+
+function bindTarget(t,i){
+  t.addEventListener('dragover',ev=>{ev.preventDefault(); t.dataset.state='hover'});
+  t.addEventListener('dragleave',()=>{t.dataset.state=''});
+  t.addEventListener('drop',ev=>{
+    ev.preventDefault(); t.dataset.state='';
+    if(t.classList.contains('filled')){ t.classList.add('bad'); setTimeout(()=>t.classList.remove('bad'),500); return; }
+    const key = ev.dataTransfer.getData('text/plain');
+    if(key==i){
+      const chip = document.querySelector(`.chip[data-key="${key}"]`);
+      if(chip){
+        chip.draggable=false; chip.classList.add('locked');
+        const ph = t.querySelector('.placeholder');
+        if(ph) ph.textContent = reverse ? current[i].zh : current[i].fr;
+        t.classList.add('ok','filled');
+        t.appendChild(chip);
+        score++;
+        if(score===current.length){ toast('Très bien！已全部匹配 ✅'); }
+      }
+    } else {
+      t.classList.add('bad'); setTimeout(()=>t.classList.remove('bad'),600);
+    }
+  });
+}
+
+function start(){
+  reverse = $('#reverseMode').checked;
+  current = shuffle(BANK.slice()).slice(0,8);
+  score = 0;
+  if(!reverse){
+    $('#colLeftTitle').textContent='① 法语词';
+    $('#colRightTitle').textContent='② 中文释义 + 图标';
+  } else {
+    $('#colLeftTitle').textContent='① 中文词 + 图标';
+    $('#colRightTitle').textContent='② 法语释义（含发音）';
+  }
+  buildChips();
+  buildTargets();
+}
+
+function reveal(){
+  $$('.target').forEach(t=>{
+    const i = Number(t.dataset.key);
+    t.classList.add('ok','filled');
+    const ph=t.querySelector('.placeholder');
+    if(ph) ph.textContent = reverse ? current[i].zh : current[i].fr;
+    const chip = document.querySelector(`.chip[data-key="${i}"]`);
+    if(chip){ chip.draggable=false; chip.classList.add('locked'); t.appendChild(chip); }
+  });
+  score=current.length;
+}
+
+function toast(msg){const el=$('#toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1600)}
+
+$('#startBtn').addEventListener('click',start);
+$('#revealBtn').addEventListener('click',reveal);
+
+start();
+</script>
+</body>
+</html>
