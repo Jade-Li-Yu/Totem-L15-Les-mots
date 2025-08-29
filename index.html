@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Totem Leçon 15 – Les mots | 词汇（主页）</title>
+<style>
+  :root{
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --accent:#10b981;
+    --accent2:#2563eb;
+    --chip:#eef2ff;
+    --shadow:0 10px 30px rgba(2,6,23,.08);
+    --radius:16px;
+  }
+  body{
+    margin:0; font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--ink); background:linear-gradient(180deg,#f8fafc,#eef2f7 60%,#e8eef7);
+  }
+  .wrap{max-width:1100px;margin:24px auto 80px;padding:0 20px}
+  header{display:flex;gap:16px;align-items:center;margin:20px 0 14px}
+  .badge{padding:6px 10px;background:#ecfeff;color:#0369a1;border-radius:999px;font-weight:600;font-size:12px}
+  h1{margin:0;font-size:28px}
+  .subtitle{color:var(--muted);margin:2px 0 6px}
+
+  .section{background:var(--card);border-radius:var(--radius);padding:20px;margin-top:18px;box-shadow:var(--shadow);border:1px solid #eef2f7}
+  .section h2{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:20px}
+  .section h2 .dot{width:12px;height:12px;border-radius:50%;background:var(--accent)}
+  .section.blue h2 .dot{background:var(--accent2)}
+  .hint{color:var(--muted);font-size:13px;margin-top:-4px;margin-bottom:10px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .term{background:#fff;border:1px solid #eef2f7;padding:14px 12px;border-radius:14px;display:flex;gap:10px;align-items:flex-start;transition:.15s}
+  .term:hover{transform:translateY(-2px);box-shadow:0 10px 18px rgba(2,6,23,.06);border-color:#e2e8f0}
+  .icon{font-size:22px;padding:6px;background:var(--chip);border-radius:10px}
+  .texts{display:flex;flex-direction:column;gap:2px}
+  .fr{font-weight:700;display:flex;align-items:center;gap:6px}
+  .cn{font-size:13px;color:var(--muted)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .chip{padding:8px 10px;border-radius:999px;background:var(--chip);border:1px solid #e6e9ff;font-weight:600}
+
+  .group{border:1px dashed #dbe4ff;border-radius:14px;padding:14px;background:#fafcff;margin-top:12px}
+  .group h3{margin:0 0 8px;font-size:15px;color:#1e293b}
+
+  .foot{margin-top:18px;font-size:12px;color:var(--muted)}
+
+  .speak{border:1px solid #cbd5e1;background:#eef2ff;color:#1e40af;font-size:12px;padding:4px 6px;border-radius:8px;cursor:pointer}
+  .speak:hover{background:#e0e7ff}
+
+  /* 跳转按钮 */
+  .jump-btn{display:inline-block;padding:14px 24px;margin:20px auto;background:#2563eb;color:#fff;
+            text-decoration:none;border-radius:12px;font-size:18px;font-weight:600;
+            box-shadow:0 6px 12px rgba(37,99,235,.2);transition:.2s}
+  .jump-btn:hover{background:#1e40af;transform:translateY(-2px)}
+  .center{text-align:center}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="badge">FR–ZH</span>
+      <div>
+        <h1>Totem Leçon 15 – Les mots</h1>
+        <div class="subtitle">Des animaux · De la nature | 动物 · 大自然</div>
+      </div>
+    </header>
+
+    <!-- 跳转按钮 -->
+    <div class="center">
+      <a href="game.html" target="_blank" class="jump-btn">🎮 进入词汇小游戏</a>
+    </div>
+
+    <!-- ANIMAUX -->
+    <section class="section">
+      <h2><span class="dot"></span>Des animaux  动物</h2>
+
+      <div class="grid">
+        <div class="term"><div class="icon">🐾</div><div class="texts"><div class="fr">la faune</div><div class="cn">动物区系</div></div></div>
+        <div class="term"><div class="icon">👨‍🌾</div><div class="texts"><div class="fr">un éleveur</div><div class="cn">饲养员</div></div></div>
+        <div class="term"><div class="icon">🧑‍🌾</div><div class="texts"><div class="fr">un berger</div><div class="cn">牧羊人</div></div></div>
+      </div>
+
+      <div class="group">
+        <h3>Catégories / 类别</h3>
+        <div class="chips">
+          <span class="chip">🐾 les mammifères <small> 哺乳动物</small></span>
+          <span class="chip">🐦 les oiseaux <small> 鸟类</small></span>
+          <span class="chip">🐟 les poissons <small> 鱼类</small></span>
+          <span class="chip">🪲 les insectes <small> 昆虫</small></span>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Les animaux sauvages 野生动物</h3>
+        <div class="grid">
+          <div class="term"><div class="icon">🐺</div><div class="texts"><div class="fr">le loup</div><div class="cn">狼</div></div></div>
+          <div class="term"><div class="icon">🐻</div><div class="texts"><div class="fr">l’ours</div><div class="cn">熊</div></div></div>
+          <div class="term"><div class="icon">🫎</div><div class="texts"><div class="fr">le cerf</div><div class="cn">鹿</div></div></div>
+          <div class="term"><div class="icon">🐐</div><div class="texts"><div class="fr">le bouquetin</div><div class="cn">野生山羊</div></div></div>
+          <div class="term"><div class="icon">🦌</div><div class="texts"><div class="fr">le chamois</div><div class="cn">岩羚羊</div></div></div>
+          <div class="term"><div class="icon">🐿️</div><div class="texts"><div class="fr">la marmotte</div><div class="cn">旱獭</div></div></div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Les animaux domestiques 家畜</h3>
+        <div class="grid">
+          <div class="term"><div class="icon">🐑</div><div class="texts"><div class="fr">le mouton</div><div class="cn">绵羊</div></div></div>
+          <div class="term"><div class="icon">🐑</div><div class="texts"><div class="fr">la brebis</div><div class="cn">母羊</div></div></div>
+          <div class="term"><div class="icon">🐄</div><div class="texts"><div class="fr">la vache</div><div class="cn">母牛</div></div></div>
+          <div class="term"><div class="icon">🐕</div><div class="texts"><div class="fr">le chien</div><div class="cn">狗</div></div></div>
+          <div class="term"><div class="icon">🐈</div><div class="texts"><div class="fr">le chat</div><div class="cn">猫</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NATURE -->
+    <section class="section blue">
+      <h2><span class="dot"></span>De la nature  大自然</h2>
+      <div class="grid">
+        <div class="term"><div class="icon">🌿</div><div class="texts"><div class="fr">la flore</div><div class="cn">植物区系</div></div></div>
+        <div class="term"><div class="icon">🪴</div><div class="texts"><div class="fr">une plante</div><div class="cn">植物</div></div></div>
+        <div class="term"><div class="icon">🌸</div><div class="texts"><div class="fr">une fleur</div><div class="cn">花</div></div></div>
+        <div class="term"><div class="icon">🌳</div><div class="texts"><div class="fr">un arbre</div><div class="cn">树</div></div></div>
+        <div class="term"><div class="icon">🧬</div><div class="texts"><div class="fr">la biodiversité</div><div class="cn">生物多样性</div></div></div>
+        <div class="term"><div class="icon">🌍</div><div class="texts"><div class="fr">un écosystème</div><div class="cn">生态系统</div></div></div>
+      </div>
+
+      <div class="foot">提示 Tips：学生可用卡片造句，如 “Dans cet écosystème, on observe des mammifères comme le chamois et le loup.”</div>
+    </section>
+  </div>
+
+<script>
+function speakFR(text){
+  try{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='fr-FR';
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.term .texts .fr').forEach(fr=>{
+    const btn=document.createElement('button');
+    btn.className='speak';
+    btn.textContent='🔊';
+    btn.title='Lire en français';
+    btn.onclick=()=>speakFR(fr.childNodes[0].textContent.trim());
+    fr.appendChild(btn);
+  });
+});
+</script>
+</body>
+</html>
